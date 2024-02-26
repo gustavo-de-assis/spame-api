@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class AddressModel {
+public class Address {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
