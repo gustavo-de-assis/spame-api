@@ -7,6 +7,8 @@ import com.spame.api.dtos.AddressDTO;
 import com.spame.api.models.Address;
 import com.spame.api.repositories.AddressRepository;
 
+import jakarta.validation.Valid;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -35,9 +37,8 @@ public class AddressController {
   }
 
   @PostMapping
-  public void create(@RequestBody AddressDTO req) {
+  public void create(@RequestBody @Valid AddressDTO req) {
     repository.save(new Address(req));
-    // System.out.println(req);
   }
 
 }
