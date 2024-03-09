@@ -3,6 +3,7 @@ package com.spame.api.controllers;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spame.api.dtos.AddressDTO;
 import com.spame.api.models.Address;
 import com.spame.api.repositories.AddressRepository;
 
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/addresses")
@@ -29,6 +32,12 @@ public class AddressController {
   @GetMapping("/{id}")
   public Optional<Address> findAddressById(@PathVariable Long id) {
     return repository.findById(id);
+  }
+
+  @PostMapping
+  public void create(@RequestBody AddressDTO req) {
+    repository.save(new Address(req));
+    // System.out.println(req);
   }
 
 }

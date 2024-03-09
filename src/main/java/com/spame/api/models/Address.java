@@ -1,5 +1,7 @@
 package com.spame.api.models;
 
+import com.spame.api.dtos.AddressDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +12,18 @@ import lombok.Data;
 @Data
 @Entity
 public class Address {
+
+  public Address() {
+  }
+
+  public Address(AddressDTO data) {
+    this.street = data.street();
+    this.houseNumber = data.houseNumber();
+    this.complement = data.complement();
+    this.district = data.district();
+    this.city = data.city();
+    this.state = data.state();
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
