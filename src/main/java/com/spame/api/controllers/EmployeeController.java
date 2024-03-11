@@ -26,6 +26,11 @@ public class EmployeeController {
   @Autowired
   private EmployeeRepository repository;
 
+  @GetMapping
+  public List<Employee> getAllEmployees() {
+    return repository.findAll();
+  }
+
   @PostMapping
   public void create(@RequestBody @Valid EmployeeDTO req) {
 
