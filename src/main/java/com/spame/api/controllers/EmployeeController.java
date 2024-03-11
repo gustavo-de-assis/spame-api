@@ -31,6 +31,11 @@ public class EmployeeController {
     return repository.findAll();
   }
 
+  @GetMapping("/{id}")
+  public Optional<Employee> getEmployeeById(@PathVariable Long id) {
+    return repository.findById(id);
+  }
+
   @PostMapping
   public void create(@RequestBody @Valid EmployeeDTO req) {
 
