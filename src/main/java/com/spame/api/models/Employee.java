@@ -27,16 +27,16 @@ public class Employee {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
-  @Column()
+  @Column(length = 50, nullable = false)
   private String name;
 
-  @Column()
+  @Column(length = 11, nullable = false)
   private String cpf;
 
-  @Column()
+  @Column(length = 50, nullable = false)
   private String password;
 
-  @Column()
+  @Column(length = 15, nullable = false)
   private String role;
 
 }
