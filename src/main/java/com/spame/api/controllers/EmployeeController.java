@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/employees")
@@ -40,6 +41,17 @@ public class EmployeeController {
   public void create(@RequestBody @Valid EmployeeDTO req) {
 
     repository.save(new Employee(req));
+  }
+
+  @PutMapping("/{id}")
+  public void update(@PathVariable Long id, @RequestBody @Valid EmployeeDTO req) {
+    repository.findById(id).map(employee -> {
+      employee.setName(req.name());
+      employee.setPassword(req.password());
+      employee.setCpf(req.cpf());
+      employee.setRole(req.role());
+      return repository.save(employee);
+    });
   }
 
 }
