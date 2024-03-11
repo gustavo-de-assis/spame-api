@@ -13,6 +13,7 @@ import com.spame.api.repositories.EmployeeRepository;
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,6 +53,11 @@ public class EmployeeController {
       employee.setRole(req.role());
       return repository.save(employee);
     });
+  }
+
+  @DeleteMapping("/{id}")
+  public void delete(@PathVariable Long id) {
+    repository.deleteById(id);
   }
 
 }
