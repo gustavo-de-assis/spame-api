@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spame.api.dtos.DoctorDTO;
 import com.spame.api.dtos.EmployeeDTO;
 import com.spame.api.models.Employee;
 import com.spame.api.repositories.EmployeeRepository;
+import com.spame.api.services.EmployeeService;
 
 import jakarta.validation.Valid;
 
@@ -24,6 +26,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
+
+  final EmployeeService employeeService;
+
+  EmployeeController(EmployeeService employeeService) {
+    this.employeeService = employeeService;
+  }
 
   @Autowired
   private EmployeeRepository repository;
@@ -58,6 +66,13 @@ public class EmployeeController {
   @DeleteMapping("/{id}")
   public void delete(@PathVariable Long id) {
     repository.deleteById(id);
+  }
+
+  @PostMapping("/doctor")
+  public void createDoctor(@RequestBody @Valid DoctorDTO req) {
+
+    System.out.println(req.employee());
+    employeeService.saveDoctor(req);
   }
 
 }
