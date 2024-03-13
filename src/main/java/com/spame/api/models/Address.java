@@ -1,12 +1,17 @@
 package com.spame.api.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.spame.api.dtos.AddressDTO;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Data
@@ -46,4 +51,7 @@ public class Address {
 
   @Column(length = 2, nullable = false)
   private String state;
+
+  @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Patient> patients = new ArrayList<>();
 }
