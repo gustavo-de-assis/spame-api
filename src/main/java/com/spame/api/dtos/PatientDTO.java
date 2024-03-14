@@ -8,7 +8,7 @@ public record PatientDTO(
     @NotBlank String birthdate,
     @NotBlank String gender,
     @NotBlank String cpf,
-    @NotBlank String rg,
+    @NotNull String rg,
     @NotBlank String mother,
     @NotBlank String father,
     @NotBlank String email,

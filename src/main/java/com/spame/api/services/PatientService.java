@@ -28,6 +28,7 @@ public class PatientService {
     return patientRepository.findAll();
   }
 
+  @SuppressWarnings("null")
   public Optional<Patient> findById(Long id) {
     return patientRepository.findById(id);
   }
@@ -44,7 +45,6 @@ public class PatientService {
     } catch (Exception e) {
       e.printStackTrace();
       throw new RuntimeException("Failed to parse data: " + e.getMessage());
-      // TODO: handle exception
     }
   }
 

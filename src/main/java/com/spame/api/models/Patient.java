@@ -1,7 +1,6 @@
 package com.spame.api.models;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 import com.spame.api.dtos.PatientDTO;
@@ -26,9 +25,9 @@ public class Patient {
 
   }
 
-  public Patient(PatientDTO data, Address address) throws ParseException {
+  public Patient(PatientDTO data, Address address) {
     this.name = data.name();
-    this.birthdate = new SimpleDateFormat("yyyy-MM-dd").parse(data.birthdate());
+    this.birthdate = LocalDate.parse(data.birthdate());
     this.gender = data.gender();
     this.cpf = data.cpf();
     this.rg = data.rg();
@@ -48,7 +47,8 @@ public class Patient {
   private String name;
 
   @Column()
-  private Date birthdate;
+  @Temporal(TemporalType.DATE)
+  private LocalDate birthdate;
 
   @Column(length = 1, nullable = false)
   private String gender;

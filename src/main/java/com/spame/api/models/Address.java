@@ -3,6 +3,7 @@ package com.spame.api.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spame.api.dtos.AddressDTO;
 
 import jakarta.persistence.CascadeType;
@@ -52,6 +53,7 @@ public class Address {
   @Column(length = 2, nullable = false)
   private String state;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Patient> patients = new ArrayList<>();
 }
