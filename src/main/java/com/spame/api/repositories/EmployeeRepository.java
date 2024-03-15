@@ -6,5 +6,5 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.spame.api.models.Employee;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-  UserDetails findByLogin(String cpf);
+  UserDetails findByCpf(String cpf);
 }

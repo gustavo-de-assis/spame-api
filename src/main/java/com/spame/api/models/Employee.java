@@ -30,7 +30,13 @@ public class Employee implements UserDetails {
     this.name = data.name();
     this.cpf = data.cpf();
     this.password = data.password();
-    this.role = data.role();
+    if ("admin".equals(data.role().toLowerCase())) {
+      this.role = UserRole.ADMIN;
+    } else if ("recep".equals(data.role().toLowerCase())) {
+      this.role = UserRole.RECEP;
+    } else {
+      this.role = UserRole.DOCTOR;
+    }
   }
 
   @Id

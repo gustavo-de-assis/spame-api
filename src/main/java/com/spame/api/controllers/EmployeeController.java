@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spame.api.dtos.DoctorDTO;
 import com.spame.api.dtos.EmployeeDTO;
+import com.spame.api.enums.UserRole;
 import com.spame.api.models.Employee;
 import com.spame.api.repositories.EmployeeRepository;
+import com.spame.api.services.AuthorizationService;
 import com.spame.api.services.EmployeeService;
 
 import jakarta.validation.Valid;
@@ -18,7 +20,6 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,10 +28,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RequestMapping("/api/employees")
 public class EmployeeController {
 
+  final AuthorizationService authorizationService;
   final EmployeeService employeeService;
 
-  EmployeeController(EmployeeService employeeService) {
+  EmployeeController(EmployeeService employeeService, AuthorizationService authorizationService) {
     this.employeeService = employeeService;
+    this.authorizationService = authorizationService;
   }
 
   @Autowired
@@ -58,7 +61,7 @@ public class EmployeeController {
       employee.setName(req.name());
       employee.setPassword(req.password());
       employee.setCpf(req.cpf());
-      employee.setRole(req.role());
+      // employee.setRole(UserRole.req.role());
       return repository.save(employee);
     });
   }
