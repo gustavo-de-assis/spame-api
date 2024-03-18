@@ -73,8 +73,6 @@ public class EmployeeController {
 
   @PostMapping("/doctor")
   public void createDoctor(@RequestBody @Valid DoctorDTO req) {
-
-    System.out.println(req.employee());
     employeeService.saveDoctor(req);
   }
 
