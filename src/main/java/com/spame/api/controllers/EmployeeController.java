@@ -51,8 +51,8 @@ public class EmployeeController {
 
   @PostMapping
   public void create(@RequestBody @Valid EmployeeDTO req) {
-
-    repository.save(new Employee(req));
+    employeeService.createEmployee(req);
+    // repository.save(new Employee(req));
   }
 
   @PutMapping("/{id}")

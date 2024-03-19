@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spame.api.dtos.EmployeeDTO;
 import com.spame.api.enums.UserRole;
 
@@ -26,6 +27,26 @@ public class Employee implements UserDetails {
 
   }
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  private Long id;
+
+  @Column(length = 50, nullable = false)
+  private String name;
+
+  @Column(length = 11, nullable = false)
+  private String cpf;
+
+  @Column(length = 100, nullable = false)
+  private String password;
+
+  @Column(length = 15, nullable = false)
+  private UserRole role;
+
+  @JsonIgnore
+  @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Doctor doctor;
+
   public Employee(EmployeeDTO data) {
     this.name = data.name();
     this.cpf = data.cpf();
@@ -38,25 +59,6 @@ public class Employee implements UserDetails {
       this.role = UserRole.DOCTOR;
     }
   }
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
-  private Long id;
-
-  @Column(length = 50, nullable = false)
-  private String name;
-
-  @Column(length = 11, nullable = false)
-  private String cpf;
-
-  @Column(length = 50, nullable = false)
-  private String password;
-
-  @Column(length = 15, nullable = false)
-  private UserRole role;
-
-  @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Doctor doctor;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
