@@ -13,6 +13,7 @@ import com.spame.api.repositories.AddressRepository;
 import com.spame.api.repositories.PatientRepository;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 
 @Service
 public class PatientService {
@@ -59,5 +60,27 @@ public class PatientService {
       Address newAddress = new Address(addressDTO);
       return addressRepository.save(newAddress);
     }
+  }
+
+  public void updatePatient(Long id, @Valid PatientDTO req) {
+    Optional<Patient> patient = patientRepository.findById(id);
+
+    if (!patient.isPresent()) {
+      throw new RuntimeException("Patient not Found!");
+    } else {
+      patientRepository.findById(id).map(pat -> {
+        // pat.setBirthdate(req.birthdate());
+        pat.setCpf(req.cpf());
+        pat.setEmail(req.email());
+        pat.setFather(req.father());
+        pat.setMother(req.mother());
+        pat.setPhone(req.phone());
+        pat.setName(req.name());
+        pat.setRg(req.rg());
+        // pat.setAddress(req.address());
+        return patientRepository.save(pat);
+      });
+    }
+
   }
 }
