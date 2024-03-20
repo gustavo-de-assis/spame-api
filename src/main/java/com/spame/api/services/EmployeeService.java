@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.management.RuntimeErrorException;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spame.api.dtos.DoctorDTO;
 import com.spame.api.dtos.EmployeeDTO;
 import com.spame.api.enums.UserRole;
+import com.spame.api.exceptions.ConflictException;
 import com.spame.api.models.Doctor;
 import com.spame.api.models.Employee;
 import com.spame.api.repositories.DoctorRepository;
@@ -31,11 +33,9 @@ public class EmployeeService {
     return employeeRepository.findAll();
   }
 
-  // public ResponseEntity createEmployee(EmployeeDTO employee) {
-  public Employee createEmployee(EmployeeDTO employee) {
+  Employee saveEmployee(EmployeeDTO employee) {
     if (this.employeeRepository.findByCpf(employee.cpf()) != null) {
-      // return ResponseEntity.badRequest().build();
-      throw new RuntimeException("Employee with this CPF already exists.");
+      throw new ConflictException("Employee with this CPF already exists.");
     }
 
     String encryptedPassword = new BCryptPasswordEncoder().encode(employee.password());
@@ -44,20 +44,36 @@ public class EmployeeService {
 
     return employeeRepository.save(new Employee(newEmployee));
 
-    // return ResponseEntity.ok().build();
+  }
+
+  public ResponseEntity createEmployee(EmployeeDTO employee) {
+    try {
+      saveEmployee(employee);
+      return ResponseEntity.ok().build();
+    } catch (ConflictException e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().build();
+    }
   }
 
   @Transactional
-  public void saveDoctor(DoctorDTO doc) {
+  public ResponseEntity saveDoctor(DoctorDTO doc) {
     EmployeeDTO employeeDTO = doc.employee();
     try {
-      Employee employee = createEmployee(employeeDTO);
+      Employee employee = saveEmployee(employeeDTO);
       Doctor doctor = new Doctor(doc, employee);
 
       doctorRepository.save(doctor);
+      return ResponseEntity.ok().build();
+    } catch (ConflictException e) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     } catch (Exception e) {
       e.printStackTrace();
-      throw new RuntimeException("Failed to save doctor and employee: " + e.getMessage());
+
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to save doctor and employee");
+      // throw new RuntimeException("Failed to save doctor and employee: " +
+      // e.getMessage());
     }
   }
 

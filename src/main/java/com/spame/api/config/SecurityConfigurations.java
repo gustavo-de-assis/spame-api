@@ -21,9 +21,12 @@ public class SecurityConfigurations {
     return httpSecurity
         .csrf(csrf -> csrf.disable())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(authorize -> authorize
+            .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "api/employees").hasRole("ADMIN")
+            .anyRequest().authenticated())
+
         .build();
-    // .authorizeHttpRequests(authorize -> authorize
-    // .requestMatchers(HttpMethod.POST, "api/employees").hasRole("ADMIN"))
   }
 
   @Bean
