@@ -2,7 +2,9 @@ package com.spame.api.models;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spame.api.dtos.AppointmentDTO;
 
 import jakarta.persistence.Column;
@@ -11,8 +13,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.Data;
@@ -43,6 +47,16 @@ public class Appointment {
   @Column()
   private String diagnosis;
 
+  @Column(columnDefinition = "boolean default false")
+  private Boolean attended;
+
+  @PreUpdate
+  protected void onUpdate() {
+    if (this.diagnosis != null && !this.diagnosis.isEmpty()) {
+      this.attended = true;
+    }
+  }
+
   @OneToOne
   @JoinColumn(name = "doctorId", referencedColumnName = "id")
   private Doctor doctor;
@@ -63,4 +77,8 @@ public class Appointment {
   protected void onCreate() {
     createdAt = new Date();
   }
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "appointment")
+  private List<MedicalRecord> medicalRecords;
 }

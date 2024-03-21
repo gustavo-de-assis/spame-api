@@ -2,7 +2,9 @@ package com.spame.api.models;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.spame.api.dtos.PatientDTO;
 
 import jakarta.persistence.Column;
@@ -12,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Temporal;
@@ -74,6 +77,10 @@ public class Patient {
   @ManyToOne
   @JoinColumn(name = "addressId", referencedColumnName = "id")
   private Address address;
+
+  @JsonIgnore
+  @OneToMany(mappedBy = "patient")
+  private List<MedicalRecord> medicalRecords;
 
   @Temporal(TemporalType.TIMESTAMP)
   @Column(nullable = false, updatable = false)
