@@ -3,6 +3,8 @@ package com.spame.api.models;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+import com.spame.api.dtos.AppointmentDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +20,18 @@ import lombok.Data;
 @Data
 @Entity
 public class Appointment {
+
+  public Appointment() {
+
+  }
+
+  public Appointment(AppointmentDTO data, Employee recep, Doctor doctor, Patient patient) {
+    this.diagnosis = data.diagnosis();
+    this.scheduleDate = data.scheduleDate();
+    this.employee = recep;
+    this.doctor = doctor;
+    this.patient = patient;
+  }
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
