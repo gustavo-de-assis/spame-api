@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Temporal;
@@ -57,15 +58,15 @@ public class Appointment {
     }
   }
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "doctorId", referencedColumnName = "id")
   private Doctor doctor;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "recepId", referencedColumnName = "id")
   private Employee employee;
 
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "patientId", referencedColumnName = "id")
   private Patient patient;
 

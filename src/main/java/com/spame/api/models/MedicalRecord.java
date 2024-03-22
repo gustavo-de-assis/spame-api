@@ -11,6 +11,12 @@ import lombok.Data;
 @Data
 @Entity
 public class MedicalRecord {
+
+  public MedicalRecord(Patient patient, Appointment appointment) {
+    this.patient = patient;
+    this.appointment = appointment;
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;

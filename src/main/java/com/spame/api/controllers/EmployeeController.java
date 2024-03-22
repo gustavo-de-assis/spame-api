@@ -14,6 +14,7 @@ import com.spame.api.models.Employee;
 import com.spame.api.repositories.EmployeeRepository;
 import com.spame.api.services.AuthorizationService;
 import com.spame.api.services.EmployeeService;
+import com.spame.api.services.TokenService;
 
 import jakarta.validation.Valid;
 
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
@@ -30,10 +32,13 @@ public class EmployeeController {
 
   final AuthorizationService authorizationService;
   final EmployeeService employeeService;
+  final TokenService tokenService;
 
-  EmployeeController(EmployeeService employeeService, AuthorizationService authorizationService) {
+  EmployeeController(EmployeeService employeeService, AuthorizationService authorizationService,
+      TokenService tokenService) {
     this.employeeService = employeeService;
     this.authorizationService = authorizationService;
+    this.tokenService = tokenService;
   }
 
   @Autowired
@@ -73,6 +78,14 @@ public class EmployeeController {
   @PostMapping("/doctor")
   public void createDoctor(@RequestBody @Valid DoctorDTO req) {
     employeeService.saveDoctor(req);
+  }
+
+  @GetMapping("/myinfo")
+  public Long myInfo(@RequestHeader("Authorization") String authorizationHeader) {
+    String token = authorizationHeader.substring(7);
+    String cpf = tokenService.validateToken(token);
+
+    return repository.findIdByCpf(cpf);
   }
 
 }
