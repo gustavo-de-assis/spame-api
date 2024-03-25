@@ -54,6 +54,7 @@ public class AppointmentController {
     }
   }
 
+  // Only doctors
   @PutMapping("/{id}")
   public void diagnosePatient(@PathVariable Long id, @RequestBody AppointmentDTO req) {
 
