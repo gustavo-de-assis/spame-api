@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -51,6 +52,12 @@ public class AppointmentController {
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  @PutMapping("/{id}")
+  public void diagnosePatient(@PathVariable Long id, @RequestBody AppointmentDTO req) {
+
+    appointmentService.diagnosePatient(req, id);
   }
 
 }

@@ -67,4 +67,11 @@ public class AppointmentService {
       throw new RuntimeException("Failed to save appointment and medical record: \n" + e.getMessage());
     }
   }
+
+  @Transactional
+  public void diagnosePatient(AppointmentDTO req, Long id) {
+    appointmentRepository.findById(id).ifPresent(appointment -> {
+      appointment.setDiagnosis(req.diagnosis());
+    });
+  }
 }

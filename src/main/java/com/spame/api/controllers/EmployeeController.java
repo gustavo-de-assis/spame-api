@@ -80,12 +80,4 @@ public class EmployeeController {
     employeeService.saveDoctor(req);
   }
 
-  @GetMapping("/myinfo")
-  public Long myInfo(@RequestHeader("Authorization") String authorizationHeader) {
-    String token = authorizationHeader.substring(7);
-    String cpf = tokenService.validateToken(token);
-
-    return repository.findIdByCpf(cpf);
-  }
-
 }
